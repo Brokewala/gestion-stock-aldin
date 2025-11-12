@@ -1,0 +1,240 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  .dashboard-hero {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #0f172a, #1e293b 55%, #312e81);
+    color: #e2e8f0;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.45);
+    margin-bottom: 2rem;
+  }
+  .dashboard-hero h1 {
+    font-size: clamp(1.75rem, 3vw, 2.2rem);
+    margin-bottom: .75rem;
+    font-weight: 700;
+  }
+  .dashboard-hero p {
+    margin: 0;
+    opacity: .8;
+    font-size: 1rem;
+  }
+  .hero-kpi {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: rgba(15, 23, 42, 0.35);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 14px;
+    padding: 1rem 1.5rem;
+  }
+  .hero-kpi svg {
+    width: 48px;
+    height: 48px;
+  }
+  .hero-kpi strong {
+    display: block;
+    font-size: 1.1rem;
+    color: #f8fafc;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  .kpi-card {
+    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    background: #0f172a;
+    color: #e2e8f0;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.35);
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::after {
+    content: "";
+    position: absolute;
+    inset: auto -30% -30% auto;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.45), transparent 70%);
+    opacity: .8;
+    pointer-events: none;
+  }
+  .kpi-title {
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #94a3b8;
+  }
+  .kpi-value {
+    margin-top: .85rem;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .charts-wrapper {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+  .chart-card {
+    background: #0f172a;
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.35);
+    min-height: 280px;
+  }
+  .chart-card h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #cbd5f5;
+  }
+  @media (max-width: 720px) {
+    .dashboard-hero {
+      margin-bottom: 1.5rem;
+      padding: 1.25rem 1.5rem;
+    }
+    .chart-card {
+      min-height: 220px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="dashboard-hero">
+  <div>
+    <h1>Bienvenue, {{ user.get_short_name|default:user.get_username }}</h1>
+    <p>Suivez d'un coup d'œil les indicateurs clefs de votre chaîne logistique et commerciale.</p>
+  </div>
+  <div class="hero-kpi">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+      <defs>
+        <linearGradient id="pulse" x1="0" x2="1" y1="1" y2="0">
+          <stop offset="0%" stop-color="#38bdf8" />
+          <stop offset="50%" stop-color="#6366f1" />
+          <stop offset="100%" stop-color="#ec4899" />
+        </linearGradient>
+      </defs>
+      <circle cx="60" cy="60" r="52" fill="none" stroke="url(#pulse)" stroke-width="8" stroke-linecap="round"
+              stroke-dasharray="60 18 32 24" />
+      <polyline points="34,70 52,54 70,62 86,42" fill="none" stroke="#f8fafc" stroke-width="8"
+                stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx="86" cy="42" r="6" fill="#f8fafc" />
+    </svg>
+    <div>
+      <span class="kpi-title" style="display:block;">Commandes (30 derniers jours)</span>
+      <strong>{{ kpi.orders_30d|default:0 }}</strong>
+    </div>
+  </div>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <span class="kpi-title">Chiffre d'affaires (30 jours)</span>
+    <div class="kpi-value">{{ kpi.revenue_30d|default:"0" }} €</div>
+  </div>
+  <div class="kpi-card">
+    <span class="kpi-title">Articles en alerte stock</span>
+    <div class="kpi-value">{{ kpi.low_stock|default:"0" }}</div>
+  </div>
+  <div class="kpi-card">
+    <span class="kpi-title">Lots périmant &lt; 30 jours</span>
+    <div class="kpi-value">{{ kpi.expiring_30d|default:"0" }}</div>
+  </div>
+  <div class="kpi-card">
+    <span class="kpi-title">Commandes (30 jours)</span>
+    <div class="kpi-value">{{ kpi.orders_30d|default:"0" }}</div>
+  </div>
+</div>
+
+<div class="charts-wrapper">
+  <div class="chart-card">
+    <h2>Tendance des ventes (30 jours)</h2>
+    <canvas id="chart-sales" height="240" aria-label="Évolution des ventes" role="img"></canvas>
+  </div>
+</div>
+
+{{ block.super }}
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  (function () {
+    const canvas = document.getElementById("chart-sales");
+    if (!canvas) {
+      return;
+    }
+    const labels = {{ charts.sales.labels|default:"[]"|safe }};
+    const data = {{ charts.sales.data|default:"[]"|safe }};
+    const chart = new Chart(canvas, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{
+          label: "Ventes",
+          data,
+          borderColor: "#38bdf8",
+          backgroundColor: "rgba(56, 189, 248, 0.18)",
+          tension: 0.35,
+          fill: true,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          borderWidth: 3,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: "#cbd5f5",
+            },
+          },
+          tooltip: {
+            backgroundColor: "#0f172a",
+            titleColor: "#f8fafc",
+            bodyColor: "#e2e8f0",
+            displayColors: false,
+          },
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: "#94a3b8",
+            },
+            grid: {
+              color: "rgba(148, 163, 184, 0.1)",
+            },
+          },
+          y: {
+            ticks: {
+              color: "#94a3b8",
+            },
+            grid: {
+              color: "rgba(148, 163, 184, 0.1)",
+            },
+          },
+        },
+      },
+    });
+    return chart;
+  })();
+</script>
+{% endblock %}

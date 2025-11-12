@@ -1,0 +1,13 @@
+<svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">DYNAMIC</title>
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" x2="100%" y1="100%" y2="0%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="50%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+  </defs>
+  <rect width="160" height="40" rx="12" fill="url(#logoGradient)" />
+  <text x="80" y="25" font-size="18" font-family="'Poppins', 'Segoe UI', sans-serif" font-weight="700" fill="#ffffff"
+        text-anchor="middle">DYNAMIC</text>
+</svg>

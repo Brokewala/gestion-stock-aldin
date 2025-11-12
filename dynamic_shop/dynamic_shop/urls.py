@@ -5,6 +5,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
+from django.views.generic import RedirectView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
@@ -24,6 +25,8 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("", include("dynamic_shop.core.urls")),
     path("admin/", admin.site.urls),
+    path("accounts/login/", RedirectView.as_view(url="/admin/login/", permanent=True)),
+    path("accounts/logout/", RedirectView.as_view(url="/admin/logout/", permanent=True)),
     path("api/", include("dynamic_shop.api.urls")),
     path("inventory/", include("dynamic_shop.inventory.urls")),
     path("sales/", include("dynamic_shop.sales.urls")),
