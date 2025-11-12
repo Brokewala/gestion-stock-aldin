@@ -1,6 +1,5 @@
 __pycache__/
 *.py[cod]
-*.sqlite3
 *.log
 *.pot
 *.pyc
@@ -14,5 +13,4 @@ htmlcov/
 .idea/
 .vscode/
 .DS_Store
-db.sqlite3
 .env.local
