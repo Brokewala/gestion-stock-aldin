@@ -30,7 +30,7 @@ ALLOWED_HOSTS = csv_env("ALLOWED_HOSTS", "127.0.0.1,localhost")
 # Django 4+ exige le schéma complet dans CSRF_TRUSTED_ORIGINS.
 CSRF_TRUSTED_ORIGINS = csv_env(
     "CSRF_TRUSTED_ORIGINS",
-    "http://127.0.0.1:8000,http://localhost:8000",
+    "http://127.0.0.1:8000,http://localhost:8000,https://gestion-stock-aldin.onrender.com/",
 )
 
 # Cookies sécurisés (activés en production via les variables d'environnement).
@@ -54,13 +54,13 @@ if RENDER_EXTERNAL_URL:
 
 # Applications installées.
 INSTALLED_APPS = [
-    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "jazzmin",
     "whitenoise.runserver_nostatic",
     # Apps tierces
     "rest_framework",
