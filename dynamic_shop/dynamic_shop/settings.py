@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Gestion des secrets et des paramètres sensibles.
 SECRET_KEY = os.getenv("SECRET_KEY", "change-me-en-production")
 DEBUG = os.getenv("DEBUG", "0") == "1"
-ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if host.strip()]
+ALLOWED_HOSTS = ["gestion-stock-aldin.onrender.com","127.0.0.1", "localhost"]
 
 # Applications installées.
 INSTALLED_APPS = [
