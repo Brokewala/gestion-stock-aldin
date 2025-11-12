@@ -4,6 +4,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 from typing import Any, Dict
+from urllib.parse import urlparse
 
 import dj_database_url
 from dotenv import load_dotenv
@@ -13,10 +14,43 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+def csv_env(name: str, default: str = "") -> list[str]:
+    """Parse une variable d'environnement CSV en liste nettoyée."""
+
+    raw = os.getenv(name, default)
+    return [item.strip() for item in raw.split(",") if item.strip()]
+
+
 # Gestion des secrets et des paramètres sensibles.
-SECRET_KEY = os.getenv("SECRET_KEY", "change-me-en-production")
-DEBUG = os.getenv("DEBUG", "0") == "1"
-ALLOWED_HOSTS = ["gestion-stock-aldin.onrender.com","127.0.0.1", "localhost"]
+DEBUG = os.getenv("DEBUG", "1") == "1"
+SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
+ALLOWED_HOSTS = csv_env("ALLOWED_HOSTS", "127.0.0.1,localhost")
+
+# Django 4+ exige le schéma complet dans CSRF_TRUSTED_ORIGINS.
+CSRF_TRUSTED_ORIGINS = csv_env(
+    "CSRF_TRUSTED_ORIGINS",
+    "http://127.0.0.1:8000,http://localhost:8000",
+)
+
+# Cookies sécurisés (activés en production via les variables d'environnement).
+SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "0") == "1"
+CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", "0") == "1"
+CSRF_COOKIE_SAMESITE = "Lax"
+
+# Indique que les requêtes HTTPS peuvent être transmises par un proxy (Render).
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Ajoute automatiquement l'hôte Render si disponible.
+RENDER_EXTERNAL_URL = os.getenv("RENDER_EXTERNAL_URL")
+if RENDER_EXTERNAL_URL:
+    parsed_url = urlparse(RENDER_EXTERNAL_URL)
+    host = parsed_url.netloc
+    if host and host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(host)
+    origin = f"{parsed_url.scheme}://{parsed_url.netloc}"
+    if origin and origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(origin)
 
 # Applications installées.
 INSTALLED_APPS = [

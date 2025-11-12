@@ -17,7 +17,7 @@ Plateforme de gestion pour la boisson énergisante **DYNAMIC** : inventaire, ven
    ```bash
    cp .env.example .env
    ```
-   Ajustez `DATABASE_URL` pour PostgreSQL si besoin. Par défaut SQLite est utilisé.
+   Ajustez `DATABASE_URL` pour PostgreSQL si besoin et adaptez les variables `ALLOWED_HOSTS` / `CSRF_TRUSTED_ORIGINS` selon votre environnement. Par défaut SQLite est utilisé.
 4. **Appliquer les migrations**
    ```bash
    python manage.py migrate
@@ -130,3 +130,21 @@ Une variable `CHATBOT_PROVIDER` (future) peut être utilisée pour intégrer un 
 
 - Les imports d'assets se font via `django-import-export` dans l'administration (Produits, Lots, Clients).
 - Des échantillons de CSV sont à ajouter manuellement dans `dynamic_shop/core/static/samples/` selon vos besoins.
+
+## 🌐 Déploiement sur Render
+
+Définissez les variables d'environnement suivantes dans le dashboard Render (adapter si vous utilisez un domaine personnalisé) :
+
+```bash
+ALLOWED_HOSTS=gestion-stock-aldin.onrender.com
+CSRF_TRUSTED_ORIGINS=https://gestion-stock-aldin.onrender.com,https://*.onrender.com
+SESSION_COOKIE_SECURE=1
+CSRF_COOKIE_SECURE=1
+DEBUG=0
+```
+
+Pour valider la configuration de sécurité :
+
+```bash
+python manage.py check --deploy
+```
