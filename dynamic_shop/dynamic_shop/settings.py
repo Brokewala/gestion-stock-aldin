@@ -13,24 +13,29 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+def csv_env(name: str, default: str = ""):
+    return [x.strip() for x in os.getenv(name, default).split(",") if x.strip()]
 
-
-def csv_env(name: str, default: str = "") -> list[str]:
-    """Parse une variable d'environnement CSV en liste nettoyée."""
-
-    raw = os.getenv(name, default)
-    return [item.strip() for item in raw.split(",") if item.strip()]
+def csv_env_urls(name: str, default: str = ""):
+    vals = csv_env(name, default)
+    fixed = []
+    for v in vals:
+        # Si l'URL n'a pas de schéma, force https:// (conforme Django >= 4)
+        if not v.startswith(("http://", "https://")):
+            v = "https://" + v
+        fixed.append(v)
+    return fixed
 
 
 # Gestion des secrets et des paramètres sensibles.
 DEBUG = os.getenv("DEBUG", "1") == "1"
 SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
-ALLOWED_HOSTS = csv_env("ALLOWED_HOSTS", "127.0.0.1,localhost")
+ALLOWED_HOSTS = csv_env("ALLOWED_HOSTS", "127.0.0.1,localhost,gestion-stock-aldin.onrender.com")
 
 # Django 4+ exige le schéma complet dans CSRF_TRUSTED_ORIGINS.
-CSRF_TRUSTED_ORIGINS = csv_env(
+CSRF_TRUSTED_ORIGINS = csv_env_urls(
     "CSRF_TRUSTED_ORIGINS",
-    "http://127.0.0.1:8000,http://localhost:8000,https://gestion-stock-aldin.onrender.com/",
+    "https://gestion-stock-aldin.onrender.com,https://*.onrender.com,http://127.0.0.1:8000,http://localhost:8000",
 )
 
 # Cookies sécurisés (activés en production via les variables d'environnement).
