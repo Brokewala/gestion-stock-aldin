@@ -1,0 +1,16 @@
+Django>=5.0,<5.1
+psycopg2-binary>=2.9
+python-dotenv>=1.0
+whitenoise>=6.6
+Pillow>=10.0
+channels>=4.0
+channels-redis>=4.1
+redis>=5.0
+djangorestframework>=3.14
+drf-yasg>=1.21
+django-filter>=23.0
+dj-database-url>=2.1
+django-import-export>=3.3
+django-jazzmin>=2.6
+pytest>=7.4
+pytest-django>=4.5

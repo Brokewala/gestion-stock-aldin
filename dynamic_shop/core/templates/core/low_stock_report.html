@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Produits à réapprovisionner{% endblock %}
+{% block content %}
+<section class="py-16 bg-slate-950 min-h-screen">
+  <div class="max-w-5xl mx-auto px-6">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold">Produits à réapprovisionner</h1>
+      <p class="text-slate-400">Liste des références dont le stock est en dessous du seuil configuré.</p>
+    </header>
+    <div class="overflow-x-auto bg-slate-900 border border-slate-800 rounded-2xl">
+      <table class="min-w-full divide-y divide-slate-800 text-sm">
+        <thead class="bg-slate-900/80">
+          <tr class="text-left text-slate-400 uppercase tracking-wide">
+            <th class="px-6 py-3">Produit</th>
+            <th class="px-6 py-3">Marque</th>
+            <th class="px-6 py-3">Catégorie</th>
+            <th class="px-6 py-3">Stock restant</th>
+            <th class="px-6 py-3">Seuil</th>
+            <th class="px-6 py-3">Réappro. conseillé</th>
+            <th class="px-6 py-3"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800">
+          {% for product in products %}
+          <tr class="text-slate-300">
+            <td class="px-6 py-3">{{ product.name }}</td>
+            <td class="px-6 py-3">{{ product.brand.name }}</td>
+            <td class="px-6 py-3">{{ product.category.name }}</td>
+            <td class="px-6 py-3">{{ product.remaining_stock }}</td>
+            <td class="px-6 py-3">{{ product.reorder_level }}</td>
+            <td class="px-6 py-3">{{ product.reorder_qty }}</td>
+            <td class="px-6 py-3 text-right"><a href="/admin/inventory/product/{{ product.id }}/change/" class="text-dynamic-300 hover:text-dynamic-100">Ouvrir</a></td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="px-6 py-6 text-center text-slate-500">Aucun produit critique pour le moment 🎉</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

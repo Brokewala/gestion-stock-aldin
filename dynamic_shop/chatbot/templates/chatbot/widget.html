@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Chatbot DYNAMIC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-900 text-slate-100 font-sans">
+    <div class="h-full flex flex-col">
+      <header class="p-4 bg-dynamic-600 text-white flex items-center justify-between">
+        <div>
+          <h1 class="text-lg font-semibold">Chatbot DYNAMIC</h1>
+          <p class="text-xs text-dynamic-100/80">Posez vos questions sur les stocks et commandes</p>
+        </div>
+        <span>⚡</span>
+      </header>
+      <main id="chat-log" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-950"></main>
+      <form id="chat-form" class="p-4 bg-slate-900 border-t border-slate-800 flex space-x-2">
+        <input id="chat-input" type="text" placeholder="Tapez votre message..." class="flex-1 px-3 py-2 rounded-lg bg-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-dynamic-500" autocomplete="off" />
+        <button class="px-4 py-2 rounded-lg bg-dynamic-600 hover:bg-dynamic-500 font-semibold" type="submit">Envoyer</button>
+      </form>
+    </div>
+    <script>
+      const log = document.getElementById('chat-log');
+      const form = document.getElementById('chat-form');
+      const input = document.getElementById('chat-input');
+      const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+      const chatSocket = new WebSocket(`${protocol}://${window.location.host}/ws/chat/`);
+
+      function appendMessage(sender, message) {
+        const bubble = document.createElement('div');
+        bubble.className = sender === 'bot' ? 'self-start bg-slate-800 px-4 py-3 rounded-2xl max-w-xs' : 'self-end bg-dynamic-600 px-4 py-3 rounded-2xl max-w-xs';
+        bubble.textContent = message;
+        log.appendChild(bubble);
+        log.scrollTop = log.scrollHeight;
+      }
+
+      chatSocket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        appendMessage(data.sender, data.message);
+      };
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const message = input.value.trim();
+        if (!message) return;
+        appendMessage('user', message);
+        chatSocket.send(JSON.stringify({ message }));
+        input.value = '';
+      });
+    </script>
+  </body>
+</html>

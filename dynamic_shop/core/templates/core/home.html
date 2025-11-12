@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block title %}DYNAMIC - Boisson énergisante et supply chain intelligente{% endblock %}
+{% block content %}
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-dynamic-900 via-slate-900 to-slate-950 opacity-70"></div>
+  <div class="relative max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-12 items-center">
+    <div>
+      <p class="inline-flex items-center px-3 py-1 rounded-full bg-dynamic-500/20 text-dynamic-200 uppercase tracking-wide text-xs font-semibold mb-4">Energie positive</p>
+      <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight mb-6">DYNAMIC, la boisson énergisante qui booste vos équipes et votre logistique</h1>
+      <p class="text-lg text-slate-300 mb-8">Maîtrisez vos flux d'approvisionnement, de production et de distribution avec une plateforme unifiée : inventaire, commandes, paiements et chatbot intégré.</p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="/admin/" class="px-6 py-3 rounded-lg bg-dynamic-600 hover:bg-dynamic-500 font-semibold text-center">Accéder à l'administration</a>
+        <a href="/api/docs/" class="px-6 py-3 rounded-lg border border-dynamic-500 text-dynamic-200 hover:bg-dynamic-500/10 text-center">Explorer l'API</a>
+      </div>
+    </div>
+    <div class="bg-slate-900/60 backdrop-blur border border-slate-800 rounded-3xl p-8 shadow-2xl">
+      <h2 class="text-xl font-semibold mb-6">Indicateurs clés</h2>
+      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+          <dt class="text-sm text-slate-400">Stock total</dt>
+          <dd class="text-3xl font-bold text-dynamic-200">{{ stats.total_stock }}</dd>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+          <dt class="text-sm text-slate-400">Commandes du jour</dt>
+          <dd class="text-3xl font-bold text-dynamic-200">{{ stats.orders_today }}</dd>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+          <dt class="text-sm text-slate-400">Produits sensibles</dt>
+          <dd class="text-3xl font-bold text-dynamic-200">{{ stats.low_stock }}</dd>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+          <dt class="text-sm text-slate-400">Chatbot actif</dt>
+          <dd class="text-3xl font-bold text-dynamic-200">24/7</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-slate-950">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl font-bold mb-12">Produits phares DYNAMIC</h2>
+    <div class="grid gap-8 md:grid-cols-3">
+      {% for product in featured_products %}
+      <article class="p-6 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col">
+        <h3 class="text-xl font-semibold text-dynamic-200 mb-2">{{ product.name }}</h3>
+        <p class="text-sm text-slate-400 mb-4">{{ product.flavor }} • {{ product.size_ml }} ml • {{ product.unit }}</p>
+        <p class="text-sm text-slate-300 flex-1">Stock disponible : {{ product.remaining_stock }} unités</p>
+        <div class="mt-6 text-xs text-slate-400">SKU : {{ product.sku }}</div>
+      </article>
+      {% empty %}
+      <p class="text-slate-400">Aucun produit encore publié. Lancez la commande <code>seed_dynamic</code> pour générer un catalogue.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-slate-900/60 border-y border-slate-800">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl font-bold mb-8">Pourquoi DYNAMIC ?</h2>
+    <div class="grid md:grid-cols-4 gap-6">
+      <div class="p-6 bg-slate-900 rounded-xl border border-slate-800">
+        <span class="text-dynamic-300 text-2xl mb-4 inline-block"><i class="fas fa-bolt"></i></span>
+        <h3 class="font-semibold mb-2">Gestion de stock temps réel</h3>
+        <p class="text-sm text-slate-400">Visibilité par entrepôt, alertes de réapprovisionnement et suivi des lots avec dates de péremption.</p>
+      </div>
+      <div class="p-6 bg-slate-900 rounded-xl border border-slate-800">
+        <span class="text-dynamic-300 text-2xl mb-4 inline-block"><i class="fas fa-receipt"></i></span>
+        <h3 class="font-semibold mb-2">Commandes fluides</h3>
+        <p class="text-sm text-slate-400">Cycle complet de la prise de commande à l'expédition avec gestion des paiements multicanaux.</p>
+      </div>
+      <div class="p-6 bg-slate-900 rounded-xl border border-slate-800">
+        <span class="text-dynamic-300 text-2xl mb-4 inline-block"><i class="fas fa-chart-line"></i></span>
+        <h3 class="font-semibold mb-2">Tableau de bord puissant</h3>
+        <p class="text-sm text-slate-400">KPIs visuels, prévisions et rapports d'alertes prêts pour les équipes commerciales.</p>
+      </div>
+      <div class="p-6 bg-slate-900 rounded-xl border border-slate-800">
+        <span class="text-dynamic-300 text-2xl mb-4 inline-block"><i class="fas fa-robot"></i></span>
+        <h3 class="font-semibold mb-2">Chatbot intégré</h3>
+        <p class="text-sm text-slate-400">Assistant conversationnel disponible 24/7 pour répondre aux clients et équipes terrain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-slate-950">
+  <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-10 items-center">
+    <div>
+      <h2 class="text-3xl font-bold mb-4">Fonctionnalités clés</h2>
+      <ul class="space-y-4 text-slate-300">
+        <li class="flex items-start space-x-3">
+          <span class="text-dynamic-300"><i class="fas fa-check-circle"></i></span>
+          <span>Import / Export CSV pour mettre à jour vos produits et lots en masse.</span>
+        </li>
+        <li class="flex items-start space-x-3">
+          <span class="text-dynamic-300"><i class="fas fa-check-circle"></i></span>
+          <span>API REST sécurisée pour intégration ERP, e-commerce ou partenaires.</span>
+        </li>
+        <li class="flex items-start space-x-3">
+          <span class="text-dynamic-300"><i class="fas fa-check-circle"></i></span>
+          <span>Notifications de réapprovisionnement dès qu'un seuil est atteint.</span>
+        </li>
+        <li class="flex items-start space-x-3">
+          <span class="text-dynamic-300"><i class="fas fa-check-circle"></i></span>
+          <span>Préparation des commandes en FIFO avec traçabilité des lots.</span>
+        </li>
+      </ul>
+    </div>
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8">
+      <h3 class="text-xl font-semibold mb-4">FAQ express</h3>
+      <dl class="space-y-4 text-sm text-slate-300">
+        <div>
+          <dt class="font-semibold text-dynamic-200">Quels sont vos délais de livraison ?</dt>
+          <dd>Expédition sous 24h sur la capitale, 48-72h en régions.</dd>
+        </div>
+        <div>
+          <dt class="font-semibold text-dynamic-200">Peut-on suivre une commande ?</dt>
+          <dd>Oui, via le chatbot avec la commande <code>suivi commande &lt;code&gt;</code> ou depuis l'espace client.</dd>
+        </div>
+        <div>
+          <dt class="font-semibold text-dynamic-200">Comment être alerté d'une rupture ?</dt>
+          <dd>Configurez le seuil de réapprovisionnement dans chaque fiche produit et recevez une notification.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<div id="chatbot-launcher" class="fixed bottom-6 right-6 z-50">
+  <button type="button" class="w-14 h-14 rounded-full bg-dynamic-600 hover:bg-dynamic-500 shadow-lg flex items-center justify-center text-white text-2xl" aria-label="Ouvrir le chatbot" onclick="toggleChatbot()">
+    <i class="fas fa-comments"></i>
+  </button>
+  <div id="chatbot-frame" class="hidden mt-4">
+    <iframe src="/chatbot/widget/" title="Chatbot DYNAMIC" class="w-80 h-96 rounded-2xl border border-slate-800 shadow-2xl"></iframe>
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>
+  function toggleChatbot() {
+    const frame = document.getElementById('chatbot-frame');
+    frame.classList.toggle('hidden');
+  }
+</script>
+{% endblock %}
