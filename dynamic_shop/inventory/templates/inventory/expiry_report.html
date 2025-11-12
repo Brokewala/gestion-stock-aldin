@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Lots proches de la péremption{% endblock %}
+{% block content %}
+<section class="py-16 bg-slate-950 min-h-screen">
+  <div class="max-w-6xl mx-auto px-6 space-y-8">
+    <header>
+      <h1 class="text-3xl font-bold">Lots proches de la péremption</h1>
+      <p class="text-slate-400">Lots expirant avant le {{ limit_date|date:"d/m/Y" }}.</p>
+    </header>
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+      <table class="min-w-full text-sm">
+        <thead class="bg-slate-900/80 text-slate-400 uppercase tracking-wider">
+          <tr>
+            <th class="px-6 py-3 text-left">Lot</th>
+            <th class="px-6 py-3 text-left">Produit</th>
+            <th class="px-6 py-3 text-left">Entrepôt</th>
+            <th class="px-6 py-3 text-left">Quantité restante</th>
+            <th class="px-6 py-3 text-left">Péremption</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800">
+          {% for batch in batches %}
+          <tr class="text-slate-300">
+            <td class="px-6 py-3">{{ batch.batch_code }}</td>
+            <td class="px-6 py-3">{{ batch.product.name }}</td>
+            <td class="px-6 py-3">{{ batch.warehouse.name }}</td>
+            <td class="px-6 py-3">{{ batch.remaining_qty }}</td>
+            <td class="px-6 py-3">{{ batch.expiry_date|date:"d/m/Y" }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="px-6 py-6 text-center text-slate-500">Aucun lot critique pour cette période.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

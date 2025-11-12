@@ -1,2 +1,18 @@
-/note.txt
-/Parti-informatique (1).docx
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+*.pot
+*.pyc
+.env
+.venv/
+venv/
+staticfiles/
+media/
+.coverage
+htmlcov/
+.idea/
+.vscode/
+.DS_Store
+db.sqlite3
+.env.local

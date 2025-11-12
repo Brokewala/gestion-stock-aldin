@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    command: daphne -b 0.0.0.0 -p 8000 dynamic_shop.dynamic_shop.asgi:application
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: dynamic
+      POSTGRES_USER: dynamic
+      POSTGRES_PASSWORD: dynamic
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
