@@ -20,13 +20,13 @@ ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "127.0.0.1,
 
 # Applications installées.
 INSTALLED_APPS = [
-    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "jazzmin",
     "whitenoise.runserver_nostatic",
     # Apps tierces
     "rest_framework",
@@ -109,8 +109,10 @@ USE_TZ = True
 # Fichiers statiques et médias.
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static", BASE_DIR / "dynamic_shop" / "static"]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -215,3 +217,4 @@ WHITENOISE_MAX_AGE = 60 * 60 * 24 * 30
 
 # Emplacement du fichier env pour la documentation.
 ENV_FILE_PATH = BASE_DIR / ".env"
+WHITENOISE_MANIFEST_STRICT = False
