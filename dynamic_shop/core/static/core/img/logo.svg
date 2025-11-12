@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <style>
+      .text {
+        font-family: 'Segoe UI', sans-serif;
+        font-weight: 800;
+        letter-spacing: 2px;
+      }
+    </style>
+  </defs>
+  <rect width="320" height="80" rx="20" fill="url(#grad)"/>
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle"
+        font-size="42" fill="#fff" class="text">DYNAMIC</text>
+  <polygon points="275,25 295,40 275,55" fill="#fff" opacity="0.85"/>
+</svg>
