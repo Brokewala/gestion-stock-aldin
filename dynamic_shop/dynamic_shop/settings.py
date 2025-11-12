@@ -154,8 +154,8 @@ JAZZMIN_SETTINGS = {
     "site_header": "DYNAMIC Backoffice",
     "welcome_sign": "Bienvenue sur DYNAMIC",
     "site_brand": "DYNAMIC",
-    "site_logo": "core/img/logo.svg",
-    "login_logo": "core/img/logo.svg",
+    "site_logo": "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=200&q=80",
+    "login_logo": "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=200&q=80",
     "show_ui_builder": False,
     "topmenu_links": [
         {"name": "Dashboard", "url": "/admin/", "permissions": ["auth.view_user"]},
