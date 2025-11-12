@@ -137,6 +137,6 @@ class StockMovementAdmin(admin.ModelAdmin):
         return False
 
 
-admin.site.site_header = "Gestion DYNAMIC"
-admin.site.site_title = "Console DYNAMIC"
-admin.site.index_title = "Bienvenue dans la console DYNAMIC"
+admin.site.site_header = "DYNAMIC Backoffice"
+admin.site.site_title = "DYNAMIC Admin"
+admin.site.index_title = "Tableau de bord"

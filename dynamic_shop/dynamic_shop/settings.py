@@ -20,13 +20,13 @@ ALLOWED_HOSTS = ["gestion-stock-aldin.onrender.com","127.0.0.1", "localhost"]
 
 # Applications installées.
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "jazzmin",
     "whitenoise.runserver_nostatic",
     # Apps tierces
     "rest_framework",
@@ -109,13 +109,17 @@ USE_TZ = True
 # Fichiers statiques et médias.
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+LOGIN_URL = "/admin/login/"
+LOGIN_REDIRECT_URL = "/admin/"
+LOGOUT_REDIRECT_URL = "/admin/login/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -150,54 +154,39 @@ JAZZMIN_SETTINGS = {
     "site_header": "DYNAMIC Backoffice",
     "welcome_sign": "Bienvenue sur DYNAMIC",
     "site_brand": "DYNAMIC",
-    "site_logo": "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=200&q=80",
-    "login_logo": "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=200&q=80",
+    "site_logo": "core/img/logo.svg",
+    "login_logo": "core/img/logo.svg",
+    "show_ui_builder": False,
     "topmenu_links": [
-        {"name": "Accueil", "url": "core:home", "permissions": ["auth.view_user"]},
-        {"name": "Documentation API", "url": "api-docs"},
+        {"name": "Dashboard", "url": "/admin/", "permissions": ["auth.view_user"]},
         {"app": "inventory"},
         {"app": "sales"},
+        {"name": "API", "url": "api-docs", "new_window": True},
     ],
     "icons": {
         "inventory.Product": "fas fa-bolt",
         "inventory.Supplier": "fas fa-truck",
         "inventory.Warehouse": "fas fa-warehouse",
-        "sales.Order": "fas fa-shopping-cart",
-        "sales.Customer": "fas fa-user",
+        "inventory.Batch": "fas fa-boxes-stacked",
+        "sales.Order": "fas fa-cart-shopping",
+        "sales.Customer": "fas fa-user-group",
         "sales.Payment": "fas fa-credit-card",
     },
-    "show_sidebar": True,
     "navigation_expanded": True,
+    "hide_apps": [],
     "hide_models": ["auth.Group"],
     "order_with_respect_to": ["inventory", "sales"],
-    "custom_links": {
-        "inventory": [
-            {
-                "name": "Rapport de stock bas",
-                "url": "core:low-stock-report",
-                "icon": "fas fa-exclamation-triangle",
-            }
-        ],
-        "sales": [
-            {
-                "name": "Commandes du jour",
-                "url": "core:dashboard",
-                "icon": "fas fa-chart-line",
-            }
-        ],
-    },
     "related_modal_active": True,
 }
 
 JAZZMIN_UI_TWEAKS = {
-    "theme": "cyborg",
+    "theme": "lux",
     "dark_mode_theme": "darkly",
-    "navbar_small_text": False,
-    "brand_small_text": False,
-    "footer_small_text": True,
-    "body_small_text": False,
+    "navbar": "navbar-dark bg-primary",
+    "navbar_fixed": True,
     "sidebar_fixed": True,
-    "navbar": "navbar-indigo navbar-dark",
+    "footer_small_text": False,
+    "body_small_text": False,
 }
 
 # Configuration Swagger/Redoc.
