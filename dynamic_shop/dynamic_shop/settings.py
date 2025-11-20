@@ -193,8 +193,8 @@ JAZZMIN_SETTINGS = {
     "site_header": "DYNAMIC Backoffice",
     "welcome_sign": "Bienvenue sur DYNAMIC",
     "site_brand": "DYNAMIC",
-    "site_logo": "img/logo.jpg",
-    "login_logo": "img/logo.jpg",
+    "site_logo": "core/img/logo.jpg",
+    "login_logo": "core/img/logo.jpg",
     "show_ui_builder": False,
     "topmenu_links": [
         {"name": "Dashboard", "url": "/admin/", "permissions": ["auth.view_user"]},
