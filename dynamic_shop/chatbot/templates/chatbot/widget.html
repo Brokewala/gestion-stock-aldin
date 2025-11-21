@@ -12,9 +12,20 @@
           <h1 class="text-lg font-semibold">Chatbot DYNAMIC</h1>
           <p class="text-xs text-dynamic-100/80">Posez vos questions sur les stocks et commandes</p>
         </div>
-        <span>⚡</span>
+        <div class="text-xs text-dynamic-100 bg-white/10 rounded-full px-3 py-1" id="status-pill">Connexion...</div>
       </header>
       <main id="chat-log" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-950"></main>
+
+      <section class="px-4 pt-3 pb-2 bg-slate-900 border-t border-slate-800">
+        <p class="text-xs text-slate-400 mb-2">Raccourcis rapides :</p>
+        <div class="flex flex-wrap gap-2 text-xs" id="shortcuts">
+          <button class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition" data-message="stock SKU-TEST">Stock SKU-TEST</button>
+          <button class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition" data-message="suivi commande ORD-TEST-0001">Suivi commande ORD-TEST-0001</button>
+          <button class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition" data-message="Quels sont vos horaires ?">Horaires</button>
+          <button class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition" data-message="Quels sont vos tarifs ?">Tarifs</button>
+        </div>
+      </section>
+
       <form id="chat-form" class="p-4 bg-slate-900 border-t border-slate-800 flex space-x-2">
         <input id="chat-input" type="text" placeholder="Tapez votre message..." class="flex-1 px-3 py-2 rounded-lg bg-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-dynamic-500" autocomplete="off" />
         <button class="px-4 py-2 rounded-lg bg-dynamic-600 hover:bg-dynamic-500 font-semibold" type="submit">Envoyer</button>
@@ -24,6 +35,8 @@
       const log = document.getElementById('chat-log');
       const form = document.getElementById('chat-form');
       const input = document.getElementById('chat-input');
+      const statusPill = document.getElementById('status-pill');
+      const shortcutContainer = document.getElementById('shortcuts');
       const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
       const chatSocket = new WebSocket(`${protocol}://${window.location.host}/ws/chat/`);
 
@@ -34,6 +47,16 @@
         log.appendChild(bubble);
         log.scrollTop = log.scrollHeight;
       }
+
+      chatSocket.onopen = () => {
+        statusPill.textContent = 'Connecté';
+        statusPill.className = 'text-xs text-dynamic-100 bg-emerald-600/80 rounded-full px-3 py-1';
+      };
+
+      chatSocket.onclose = () => {
+        statusPill.textContent = 'Déconnecté';
+        statusPill.className = 'text-xs text-white bg-rose-600/80 rounded-full px-3 py-1';
+      };
 
       chatSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
@@ -47,6 +70,14 @@
         appendMessage('user', message);
         chatSocket.send(JSON.stringify({ message }));
         input.value = '';
+      });
+
+      shortcutContainer.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target instanceof HTMLButtonElement && target.dataset.message) {
+          input.value = target.dataset.message;
+          form.dispatchEvent(new Event('submit'));
+        }
       });
     </script>
   </body>
