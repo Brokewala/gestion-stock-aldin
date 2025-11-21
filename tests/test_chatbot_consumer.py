@@ -35,3 +35,29 @@ async def test_chatbot_order_status(product: Product, warehouse):
     response = await communicator.receive_json_from()
     assert "ORD-TEST-0001" in response["message"]
     await communicator.disconnect()
+
+
+@pytest.mark.asyncio
+@pytest.mark.django_db(transaction=True)
+async def test_chatbot_stock_lookup_by_name(product: Product, warehouse):
+    receive_purchase("Test", [PurchaseItem(product=product, quantity=12, batch_code="BOT2")], warehouse)
+    communicator = WebsocketCommunicator(application, "/ws/chat/")
+    await communicator.connect()
+    await communicator.receive_json_from()
+    await communicator.send_json_to({"message": "Quel est le stock produit test ?"})
+    response = await communicator.receive_json_from()
+    assert "Produit Test" in response["message"]
+    assert "12" in response["message"]
+    await communicator.disconnect()
+
+
+@pytest.mark.asyncio
+@pytest.mark.django_db(transaction=True)
+async def test_chatbot_help_message(product: Product, warehouse):
+    communicator = WebsocketCommunicator(application, "/ws/chat/")
+    await communicator.connect()
+    await communicator.receive_json_from()
+    await communicator.send_json_to({"message": "??"})
+    response = await communicator.receive_json_from()
+    assert "stock <SKU>" in response["message"]
+    await communicator.disconnect()
